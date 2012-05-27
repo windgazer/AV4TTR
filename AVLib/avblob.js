@@ -17,7 +17,7 @@ var AVBlob = (function (window) {
 				}
 			};
 
-		var _public = {
+		return {
 			add: function(x, y) {
 
 				if ( _pixels.length < 1 || _check( x, y ) ) {
@@ -55,7 +55,5 @@ var AVBlob = (function (window) {
 				}
 			}
 		};
-		// Public members
-		return _public; 
 	};
 }(window));

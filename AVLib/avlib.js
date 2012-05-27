@@ -89,7 +89,6 @@ var AVLib = (function (window) {
 				}	
 				var i = 0, x = 0, y = 0;
 				while (i < (data1.length * 0.25)) {
-					
 					var average1 = (data1[4*i] + data1[4*i+1] + data1[4*i+2]) / 3;
 					var average2 = (data2[4*i] + data2[4*i+1] + data2[4*i+2]) / 3;
 					var diff = _threshold(_fastAbs(average1 - average2));
@@ -100,8 +99,8 @@ var AVLib = (function (window) {
 					++i;
 					
 					if (diff == 255) {
-						y = Math.floor(i / 640);
-						x = i - (y * 640);
+						y = Math.floor(i / 320);
+						x = i - (y * 320);
 						var matched = false;
 						for (var j = 0, l = _blobs.length; j < l && matched == false; j++) {
 							var blob = _blobs[j];
@@ -110,12 +109,17 @@ var AVLib = (function (window) {
 						if (!matched) {
 							var blob = AVBlob();
 							blob.add(x, y);
-							_blobs.push(blob); 
+							_blobs.push(blob);
 						}
 					}
 				}
 			},
+			_randomRange = function (min, max) {
+				return Math.floor((Math.random()*max)+min);
+			},			
 			_snapshot = function () {
+				//	Clear our previously found blobs
+				_blobs = [];
 				//	Clear the snapshot canvas
 				_snapshotCanvas.ctx.clearRect(0, 0, _snapshotCanvas.width, _snapshotCanvas.height);
 				//	Clear the blob canvas
@@ -145,9 +149,14 @@ var AVLib = (function (window) {
 						for (var i = 0, l = _blobs.length; i < l; i++) {
 							//	Log the blobs info
 							var blob = _blobs[i].getInfo();
+							//	If a blob contains less then 50 pixels,
+							//	we don''t take it seriously (can't be a marker)
+							if (blob.pixelCount < 50) {
+								continue;
+							}
 							console.log(blob);
 							//	Draw the blog to the blog canvas for debugging
-							_blobCanvas.ctx.fillStyle = 'rgb(255, 255, 255)';
+							_blobCanvas.ctx.fillStyle = 'rgb(' + _randomRange(0, 255) + ', ' + _randomRange(0, 255) + ', ' + _randomRange(0, 255) + ')';
 							_blobCanvas.ctx.fillRect(blob.x, blob.y, blob.width, blob.height);
 						}
 					}

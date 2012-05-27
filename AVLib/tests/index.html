@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>AVLib Test Project</title>
+<link rel="stylesheet" type="text/css" href="jasmine-core/jasmine.css">
+<script type="text/javascript" src="jasmine-core/jasmine.js"></script>
+<script type="text/javascript" src="jasmine-core/jasmine-html.js"></script>
+
+<script type="text/javascript" src="../plugins/aruco/aruco.js"></script>
+<script type="text/javascript" src="../plugins/aruco/cv.js"></script>
+
+<script type="text/javascript" src="../avblob.js"></script>
+<script type="text/javascript" src="../avlib.js"></script>
+<script type="text/javascript" src="spec/avblob.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var trivialReporter = new jasmine.TrivialReporter();
+
+      jasmineEnv.addReporter(trivialReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return trivialReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+
+</body>
+</html>

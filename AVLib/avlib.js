@@ -182,32 +182,31 @@ var AVLib = (function (window) {
 							console.log(blob);
 							//	Draw the blog to the blog canvas for debugging
 							_blobCanvas.ctx.fillStyle = 'rgb(' + _randomRange(0, 255) + ', ' + _randomRange(0, 255) + ', ' + _randomRange(0, 255) + ')';
-							_blobCanvas.ctx.fillRect(blob.x, blob.y, blob.width, blob.height);
-							
-							//	Check if one of the blobs overlaps a spot
-							//	Get the pixels in the spot areas
-							var spots = _board.getSpots();
-							for (var j = 0, l = spots.length; j < l; j++) {
-								var spot = spots[j];
-								var snapshotData = _snapshotCanvas.ctx.getImageData(spot.x, spot.y, spot.width, spot.height);
-								var i = 0; var average = 0;
-								//	loop over the pixels
-								while (i < (snapshotData.data.length / 4)) {
-									//	Make an average between the color channel
-									average += (snapshotData.data[i*4] + snapshotData.data[i*4+1] + snapshotData.data[i*4+2]) / 3;
-									++i;
-								}
-								//	Calculate an average between of the color values of the spot area
-								average = Math.round(average / (snapshotData.data.length / 4));
-								if (average > 10) {
-									//	When the average is bigger then the threshold, the spot is taken
-									spot.setTaken(true);
-								}
-								else {
-									spot.setTaken(false);
-								}
-							}															
+							_blobCanvas.ctx.fillRect(blob.x, blob.y, blob.width, blob.height);															
 						}
+						//	Check if one of the blobs overlaps a spot
+						//	Get the pixels in the spot areas
+						var spots = _board.getSpots();
+						for (var j = 0, l = spots.length; j < l; j++) {
+							var spot = spots[j];
+							var snapshotData = _snapshotCanvas.ctx.getImageData(spot.x, spot.y, spot.width, spot.height);
+							var i = 0; var average = 0;
+							//	loop over the pixels
+							while (i < (snapshotData.data.length / 4)) {
+								//	Make an average between the color channel
+								average += (snapshotData.data[i*4] + snapshotData.data[i*4+1] + snapshotData.data[i*4+2]) / 3;
+								++i;
+							}
+							//	Calculate an average between of the color values of the spot area
+							average = Math.round(average / (snapshotData.data.length / 4));
+							if (average > 10) {
+								//	When the average is bigger then the threshold, the spot is taken
+								spot.setTaken(true);
+							}
+							else {
+								spot.setTaken(false);
+							}
+						}						
 					}
 					_debug('');
 				}		

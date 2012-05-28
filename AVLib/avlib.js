@@ -11,6 +11,7 @@ var AVLib = (function (window) {
 			_snapshotCanvas = null,
 			_blobCanvas = null,
 			_blobs = [],
+			_board = null,
 			_debug = function (message) {
 				var debugDiv = _doc.getElementById('debug');
 				if (!debugDiv) {
@@ -76,6 +77,30 @@ var AVLib = (function (window) {
 				else {
 					_getUserMediaError();
 				}
+			},
+			_setupBoard = function () {
+				//	Create a virtual play board
+				_board = AVBoard(_canvas.ctx);
+				//	Add some test spots to the board
+				_board.addSpot(AVSpot(50, 30, 20, 20));
+				_board.addSpot(AVSpot(100, 30, 20, 20));
+				_board.addSpot(AVSpot(150, 30, 20, 20));
+				_board.addSpot(AVSpot(200, 30, 20, 20));
+				_board.addSpot(AVSpot(250, 30, 20, 20));
+				
+				_board.addSpot(AVSpot(250, 30, 20, 20));
+				_board.addSpot(AVSpot(250, 80, 20, 20));
+				_board.addSpot(AVSpot(250, 130, 20, 20));
+				_board.addSpot(AVSpot(250, 180, 20, 20));
+				
+				_board.addSpot(AVSpot(250, 180, 20, 20));
+				_board.addSpot(AVSpot(200, 180, 20, 20));
+				_board.addSpot(AVSpot(150, 180, 20, 20));
+				_board.addSpot(AVSpot(100, 180, 20, 20));
+				_board.addSpot(AVSpot(50, 180, 20, 20));
+				
+				_board.addSpot(AVSpot(50, 80, 20, 20));
+				_board.addSpot(AVSpot(50, 130, 20, 20));
 			},
 			_fastAbs = function (value) {
 				return (value ^ (value >> 31)) - (value >> 31);
@@ -158,6 +183,30 @@ var AVLib = (function (window) {
 							//	Draw the blog to the blog canvas for debugging
 							_blobCanvas.ctx.fillStyle = 'rgb(' + _randomRange(0, 255) + ', ' + _randomRange(0, 255) + ', ' + _randomRange(0, 255) + ')';
 							_blobCanvas.ctx.fillRect(blob.x, blob.y, blob.width, blob.height);
+							
+							//	Check if one of the blobs overlaps a spot
+							//	Get the pixels in the spot areas
+							var spots = _board.getSpots();
+							for (var j = 0, l = spots.length; j < l; j++) {
+								var spot = spots[j];
+								var snapshotData = _snapshotCanvas.ctx.getImageData(spot.x, spot.y, spot.width, spot.height);
+								var i = 0; var average = 0;
+								//	loop over the pixels
+								while (i < (snapshotData.data.length / 4)) {
+									//	Make an average between the color channel
+									average += (snapshotData.data[i*4] + snapshotData.data[i*4+1] + snapshotData.data[i*4+2]) / 3;
+									++i;
+								}
+								//	Calculate an average between of the color values of the spot area
+								average = Math.round(average / (snapshotData.data.length / 4));
+								if (average > 10) {
+									//	When the average is bigger then the threshold, the spot is taken
+									spot.setTaken(true);
+								}
+								else {
+									spot.setTaken(false);
+								}
+							}															
 						}
 					}
 					_debug('');
@@ -165,10 +214,11 @@ var AVLib = (function (window) {
 			},
 			_update = function () {
 				_draw();
+				_board.draw();
 				setTimeout(_update, 1000/60);
 			},
 			_draw = function () {
-				_canvas.ctx.drawImage(_video, 0, 0, _video.width, _video.height);				
+				_canvas.ctx.drawImage(_video, 0, 0, _video.width, _video.height);
 			};
 		// Public members
 		app.apply({
@@ -180,15 +230,12 @@ var AVLib = (function (window) {
 			init: function () {
 				//	Create canvas or get it by id
 				if (!canvasId) {
-					_canvas = _createCanvas('main-canvas', 640, 480);
+					_canvas = _createCanvas('main-canvas', 320, 240);
 				}
 				else {
 					_canvas = _doc.getElementById(canvasId);
 				}
 				_canvas.ctx = _canvas.getContext('2d');
-				
-				//	Mirror the canvas
-				_canvas.ctx.translate(_canvas.width, 0); _canvas.ctx.scale(-1, 1);
 				
 				//	Create snapshot canvas or get it by id
 				if (!snapshotCanvasId) {
@@ -210,6 +257,8 @@ var AVLib = (function (window) {
 				
 				//	Create a video tag and fetch the webcam stream
 				_setupWebcam();
+				//	Setup the virtual (for now) board
+				_setupBoard();
 				//	Start the update sequence
 				_update();				
 			},

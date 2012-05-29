@@ -124,8 +124,8 @@ var AVLib = (function (window) {
 					++i;
 					
 					if (diff == 255) {
-						y = Math.floor(i / 320);
-						x = i - (y * 320);
+						y = Math.floor(i / 640);
+						x = i - (y * 640);
 						var matched = false;
 						for (var j = 0, l = _blobs.length; j < l && matched == false; j++) {
 							var blob = _blobs[j];
@@ -174,9 +174,9 @@ var AVLib = (function (window) {
 						for (var i = 0, l = _blobs.length; i < l; i++) {
 							//	Log the blobs info
 							var blob = _blobs[i].getInfo();
-							//	If a blob contains less then 50 pixels,
+							//	If a blob contains less then 300 pixels,
 							//	we don''t take it seriously (can't be a marker)
-							if (blob.pixelCount < 50) {
+							if (blob.pixelCount < 300) {
 								continue;
 							}
 							console.log(blob);
@@ -229,7 +229,7 @@ var AVLib = (function (window) {
 			init: function () {
 				//	Create canvas or get it by id
 				if (!canvasId) {
-					_canvas = _createCanvas('main-canvas', 320, 240);
+					_canvas = _createCanvas('main-canvas', 640, 480);
 				}
 				else {
 					_canvas = _doc.getElementById(canvasId);

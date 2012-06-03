@@ -1,18 +1,20 @@
 describe("AVBoard", function() {
 
-	it ('Should be able to add spots', function () {
+	it ('Should be able to set and get board info', function() {
 		var board = AVBoard();
-		var a = board.addSpot(AVSpot(20, 20, 20, 20));
-		expect(a).toBeTruthy();
+		board.setX(10);
+		board.setY(12);
+		board.setWidth(510);
+		board.setHeight(463);
+		expect(board.getInfo()).toEqual({x: 10, y: 12, width: 510, height: 463});
 	});
-	
-	it ('Should be able to get spots', function() {
+
+	it ('Should be able to set and get positionmarker info', function() {
 		var board = AVBoard();
-		board.addSpot(AVSpot(20, 20, 20, 20));
-		board.addSpot(AVSpot(40, 40, 20, 20));
-		s = board.getSpots();
-		expect(board.getSpots()).toEqual({ x: 20, y: 20, width: 20, height: 20, setTaken: Function, getTaken: Function },
-			{x: 40, y  40, width: 20, height: 20, setTaken: Function, getTaken: Function });
+		board.setPmLB(682);
+		board.setPmRT(213);
+		expect(board.getPmLB()).toEqual(682);
+		expect(board.getPmRT()).toEqual(213);
 	});
 
 });

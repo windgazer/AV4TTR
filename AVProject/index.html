@@ -4,24 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>AVLib Test Project</title>
 <link href="css/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../AVLib/plugins/aruco.js"></script>
+<script type="text/javascript" src="../AVLib/plugins/cv.js"></script>
 <script type="text/javascript" src="../AVLib/avblob.js"></script>
 <script type="text/javascript" src="../AVLib/avboard.js"></script>
-<script type="text/javascript" src="../AVLib/avspot.js"></script>
 <script type="text/javascript" src="../AVLib/avlib.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
 </head>
 
 <body>
+	<video id="video" autoplay="true" width="640" height="480"></video>
 	<div id="container">
 		<div id="canvas-holder">
 			<canvas id="main-canvas" width="640" height="480"></canvas>
-			<div id="right">
-				<canvas id="snapshot-canvas" width="640" height="480"></canvas>
-				<canvas id="blob-canvas" width="640" height="480"></canvas>				
-			</div>			
 		</div>
     </div>
-	<button id="btn-snapshot">Take snapshot</button>
-	<div id="debug"></div>	
+	<div id="debug"></div>
 </body>
 </html>

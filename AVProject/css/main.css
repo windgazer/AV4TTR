@@ -7,7 +7,7 @@ body {
 
 #container {
 	margin: 0 auto;
-	width: 960px;
+	width: 640px;
 	height: 100%;
 }
 
@@ -15,34 +15,20 @@ body {
 	position: absolute;
 	top: 50%;
 	margin-top: -240px;
-	box-shadow: 7px 7px 14px #000;	
+	box-shadow: 7px 7px 14px #000;
 }
 
-canvas {	
+#video {
+    display: none;
+}
+
+canvas {
 	background: #252e34;
-	float: left;	
+	float: left;
 }
 
 #main-canvas {
 	border-right: 1px solid #042b41;
-	height: 481px;
-}
-
-#snapshot-canvas {
-	border-bottom: 1px solid #042b41;
-	width: 320px;
-	height: 240px;	
-}
-
-#blob-canvas {
-	width: 320px;
-	height: 240px;
-}
-
-#right {
-	float: left;
-	width: 320px;
-	height: 240px;
 }
 
 #debug {
